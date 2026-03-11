@@ -2,7 +2,7 @@ package rps;
 
 import java.util.Scanner;
 
-public class HumanChoiceProvider implements ChoiceProvider {
+public class ConsoleChoiceProvider implements ChoiceProvider {
 
     private final Scanner scanner = new Scanner(System.in);
 
