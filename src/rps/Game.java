@@ -2,11 +2,11 @@ package rps;
 
 public class Game {
     private final Player human;
-    private final Player computer;
+    private final Computer computer;
     private final Rules rules;
     private final int totalRounds;
 
-    public Game(Player human, Player computer, Rules rules, int totalRounds) {
+    public Game(Player human, Computer computer, Rules rules, int totalRounds) {
         this.human = human;
         this.computer = computer;
         this.rules = rules;
@@ -17,12 +17,12 @@ public class Game {
         Scoreboard scoreboard = new Scoreboard();
 
         for (int round = 1; round <= totalRounds; round++) {
-            Move humanMove = human.chooseMove(round);
             Move computerMove = computer.chooseMove(round);
+            Move humanMove = human.chooseMove(round);
 
             RoundResult result = rules.decide(humanMove, computerMove);
+            computer.observeRound(humanMove, computerMove);
 
-            // Round info
             System.out.printf("You chose %s. The computer chose %s. %s%n",
                     humanMove.displayName(),
                     computerMove.displayName(),
@@ -34,6 +34,8 @@ public class Game {
             System.out.println(scoreboard.format());
             System.out.println("-----------------------------");
         }
+
+        computer.onGameOver();
 
         System.out.println("Game over!");
         System.out.println(scoreboard.finalSummary());
