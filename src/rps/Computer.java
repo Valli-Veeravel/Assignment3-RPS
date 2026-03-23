@@ -13,6 +13,13 @@ public class Computer implements Player {
     public Move chooseMove(int roundNumber) {
         return strategy.chooseMove(roundNumber);
     }
+     public void observeRound(Move humanMove, Move computerMove) {
+        strategy.observeRound(humanMove, computerMove);
+    }
+
+    public void onGameOver() {
+        strategy.onGameOver();
+    }
 
     @Override
     public String name() {
