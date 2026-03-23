@@ -1,67 +1,96 @@
 package rps;
 
 import org.junit.Test;
-import static org.junit.Assert.*;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class RpsTests {
 
-   //STANDARD RULES
+    private ChoiceProvider fixedChoiceProvider(Move move) {
+        return new ChoiceProvider() {
+            @Override
+            public Move getHumanMove(int roundNumber) {
+                return move;
+            }
+        };
+    }
+
+    private ComputerStrategy fixedComputerStrategy(Move move) {
+        return new ComputerStrategy() {
+            @Override
+            public Move chooseMove(int roundNumber) {
+                return move;
+            }
+        };
+    }
+
+    // STANDARD RULES
 
     @Test
     public void rockBeatsScissors() {
         Rules rules = new StandardRules();
-        assertEquals(RoundResult.Outcome.HUMAN_WIN, rules.decide(Move.ROCK, Move.SCISSORS).outcome());
+        assertEquals(RoundResult.Outcome.HUMAN_WIN,
+                rules.decide(Move.ROCK, Move.SCISSORS).outcome());
     }
 
     @Test
     public void scissorsBeatsPaper() {
         Rules rules = new StandardRules();
-        assertEquals(RoundResult.Outcome.HUMAN_WIN, rules.decide(Move.SCISSORS, Move.PAPER).outcome());
+        assertEquals(RoundResult.Outcome.HUMAN_WIN,
+                rules.decide(Move.SCISSORS, Move.PAPER).outcome());
     }
 
     @Test
     public void paperBeatsRock() {
         Rules rules = new StandardRules();
-        assertEquals(RoundResult.Outcome.HUMAN_WIN, rules.decide(Move.PAPER, Move.ROCK).outcome());
+        assertEquals(RoundResult.Outcome.HUMAN_WIN,
+                rules.decide(Move.PAPER, Move.ROCK).outcome());
     }
 
     @Test
     public void rockLosesToPaper() {
         Rules rules = new StandardRules();
-        assertEquals(RoundResult.Outcome.COMPUTER_WIN, rules.decide(Move.ROCK, Move.PAPER).outcome());
+        assertEquals(RoundResult.Outcome.COMPUTER_WIN,
+                rules.decide(Move.ROCK, Move.PAPER).outcome());
     }
 
     @Test
     public void scissorsLoseToRock() {
         Rules rules = new StandardRules();
-        assertEquals(RoundResult.Outcome.COMPUTER_WIN, rules.decide(Move.SCISSORS, Move.ROCK).outcome());
+        assertEquals(RoundResult.Outcome.COMPUTER_WIN,
+                rules.decide(Move.SCISSORS, Move.ROCK).outcome());
     }
 
     @Test
     public void paperLosesToScissors() {
         Rules rules = new StandardRules();
-        assertEquals(RoundResult.Outcome.COMPUTER_WIN, rules.decide(Move.PAPER, Move.SCISSORS).outcome());
+        assertEquals(RoundResult.Outcome.COMPUTER_WIN,
+                rules.decide(Move.PAPER, Move.SCISSORS).outcome());
     }
 
     @Test
     public void rockVsRockIsDraw() {
         Rules rules = new StandardRules();
-        assertEquals(RoundResult.Outcome.DRAW, rules.decide(Move.ROCK, Move.ROCK).outcome());
+        assertEquals(RoundResult.Outcome.DRAW,
+                rules.decide(Move.ROCK, Move.ROCK).outcome());
     }
 
     @Test
     public void paperVsPaperIsDraw() {
         Rules rules = new StandardRules();
-        assertEquals(RoundResult.Outcome.DRAW, rules.decide(Move.PAPER, Move.PAPER).outcome());
+        assertEquals(RoundResult.Outcome.DRAW,
+                rules.decide(Move.PAPER, Move.PAPER).outcome());
     }
 
     @Test
     public void scissorsVsScissorsIsDraw() {
         Rules rules = new StandardRules();
-        assertEquals(RoundResult.Outcome.DRAW, rules.decide(Move.SCISSORS, Move.SCISSORS).outcome());
+        assertEquals(RoundResult.Outcome.DRAW,
+                rules.decide(Move.SCISSORS, Move.SCISSORS).outcome());
     }
 
-    //SCOREBOARD TESTS
+    // SCOREBOARD TESTS
 
     @Test
     public void scoreboardTracksHumanWin() {
@@ -103,10 +132,10 @@ public class RpsTests {
         Scoreboard sb = new Scoreboard();
         sb.apply(new RoundResult(RoundResult.Outcome.HUMAN_WIN));
         sb.apply(new RoundResult(RoundResult.Outcome.COMPUTER_WIN));
-        assertTrue(sb.finalSummary().contains("draw"));
+        assertTrue(sb.finalSummary().toLowerCase().contains("draw"));
     }
 
-    //MENU CHOICE
+    // MENU CHOICE
 
     @Test
     public void fromMenuChoice1ReturnsRock() {
@@ -128,33 +157,31 @@ public class RpsTests {
         Move.fromMenuChoice(99);
     }
 
-    //HUMAN TESTS
+    // HUMAN TESTS
 
     @Test
     public void humanReturnsWhateverProviderGives() {
-        ChoiceProvider stub = roundNumber -> Move.PAPER;
-        Human human = new Human("Tester", stub);
+        Human human = new Human("Tester", fixedChoiceProvider(Move.PAPER));
         assertEquals(Move.PAPER, human.chooseMove(1));
     }
 
     @Test
     public void humanNameIsCorrect() {
-        Human human = new Human("Alice", roundNumber -> Move.ROCK);
+        Human human = new Human("Alice", fixedChoiceProvider(Move.ROCK));
         assertEquals("Alice", human.name());
     }
 
-    //COMPUTER TESTS
+    // COMPUTER TESTS
 
     @Test
     public void computerDelegatesToStrategy() {
-        ComputerStrategy fixedRock = roundNumber -> Move.ROCK;
-        Computer computer = new Computer("Bot", fixedRock);
+        Computer computer = new Computer("Bot", fixedComputerStrategy(Move.ROCK));
         assertEquals(Move.ROCK, computer.chooseMove(1));
     }
 
     @Test
     public void computerNameIsCorrect() {
-        Computer computer = new Computer("HAL", roundNumber -> Move.SCISSORS);
+        Computer computer = new Computer("HAL", fixedComputerStrategy(Move.SCISSORS));
         assertEquals("HAL", computer.name());
     }
 }
