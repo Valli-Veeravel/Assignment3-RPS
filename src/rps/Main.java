@@ -1,5 +1,7 @@
 package rps;
 
+import java.util.Scanner;
+
 public class Main {
     private static final int DEFAULT_ROUNDS = 20;
 
@@ -18,23 +20,24 @@ public class Main {
     
     
     private static ComputerStrategy selectStrategy(String[] args) {
-        if (args.length == 0) {
-            System.out.println("No strategy option supplied. Defaulting to random.");
-            return new RandomComputerStrategy(); 
-        }
 
-        if (args[0].equals("-m")) {
-            System.out.println("Using machine-learning strategy.");
-            return new MachineLearningComputerStrategy(5, "rps-ml-data.txt");
-        }
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Choose the computer strategy before the game starts:");
+        System.out.println("Enter r for random strategy or m for machine learning strategy.");
+        while (true) {
+           
+            String input = scanner.nextLine().trim().toLowerCase();
 
-        if (args[0].equals("-r")) {
-            System.out.println("Using random strategy.");
-            return new RandomComputerStrategy();
-        }
+            if ("r".equals(input)) {
+                return new RandomComputerStrategy();
+            }
+            if ("m".equals(input)) {
+                return new MachineLearningComputerStrategy(5, "rps-ml-data.txt");
+            }
 
-        // fallback if unknown flag
-        System.out.println("Unknown strategy option. Defaulting to random.");
-        return new RandomComputerStrategy();
+            System.out.println("Invalid choice. Please enter r or m.");
+            
+        }
+        
     }
 }
