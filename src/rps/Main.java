@@ -8,7 +8,7 @@ public class Main {
     public static void main(String[] args) {
         Rules rules = new StandardRules();
         ChoiceProvider choiceProvider = new ConsoleChoiceProvider();
-        ComputerStrategy strategy = selectStrategy(args);
+        ComputerStrategy strategy = selectStrategy();
 
         Player human = new Human("Human", choiceProvider);
         Computer computer = new Computer("Computer", strategy);
@@ -19,7 +19,7 @@ public class Main {
 
     
     
-    private static ComputerStrategy selectStrategy(String[] args) {
+    private static ComputerStrategy selectStrategy() {
 
         Scanner scanner = new Scanner(System.in);
         System.out.println("Choose the computer strategy before the game starts:");
