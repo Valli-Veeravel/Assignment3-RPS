@@ -1,21 +1,22 @@
 package rps;
 
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import rps.controller.RpsGameController;
 
 public class MainFx extends Application {
-
     @Override
-    public void start(Stage stage) {
-        Label label = new Label("RPS JavaFX is running");
-        StackPane root = new StackPane(label);
+    public void start(Stage stage) throws Exception {
+        FXMLLoader loader = new FXMLLoader(MainFx.class.getResource("/RpsGameView.fxml"));
+        Parent root = loader.load();
+        RpsGameController controller = loader.getController();
 
-        Scene scene = new Scene(root, 500, 300);
-        stage.setTitle("RPS - Assignment GUI");
-        stage.setScene(scene);
+        stage.setOnCloseRequest(e -> controller.onWindowClose());
+        stage.setTitle("RPS GUI");
+        stage.setScene(new Scene(root, 760, 720));
         stage.show();
     }
 
