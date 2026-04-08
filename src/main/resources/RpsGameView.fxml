@@ -21,6 +21,7 @@
                     <items>
                         <MenuItem text="Start a new game" onAction="#onStartNewGame"/>
                         <MenuItem text="Exit" onAction="#onExit"/>
+                        <MenuItem text="About" onAction="#onAbout"/>
                     </items>
                 </Menu>
             </menus>
