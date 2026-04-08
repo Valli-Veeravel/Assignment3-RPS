@@ -56,6 +56,20 @@ public class RpsGameController {
         model.saveAndClose();
         Platform.exit();
     }
+    @FXML
+    private void onAbout() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("About");
+        alert.setHeaderText("Rock Paper Scissors Game");
+        alert.setContentText(
+                "CS 151 - Assignment 5 - Group 31\n\n" +
+                "Features:\n" +
+                "- Machine learning prediction\n" +
+                "- Score tracking\n" +
+                "- Configurable rounds\n\n" 
+        );
+        alert.showAndWait();
+    }
 
     public void onWindowClose() {
         model.saveAndClose();
